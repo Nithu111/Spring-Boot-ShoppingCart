@@ -33,4 +33,34 @@ public ResponseStructure<Merchant> saveMerchant(Merchant merchant)
 	structure.setStatus(HttpStatus.PROCESSING.value());
 	return structure;
 }
+
+public ResponseStructure<Merchant> verifyMerchant(int id, int otp) {
+	ResponseStructure<Merchant> structure=new ResponseStructure<>();
+
+	Merchant merchant=dao.findById(id);
+	
+	if(merchant==null)
+	{
+		structure.setData(null);
+		structure.setMessage("Id Not Found");
+		structure.setStatus(HttpStatus.BAD_REQUEST.value());		
+	}
+	else {
+		if(otp==merchant.getOtp())
+		{
+			merchant.setStatus(true);
+			structure.setData(dao.savemerchant(merchant));
+			structure.setMessage("Account created Succesfully");
+			structure.setStatus(HttpStatus.CREATED.value());
+		}
+		else {
+			structure.setData(null);
+			structure.setMessage("OTP Missmatch");
+			structure.setStatus(HttpStatus.BAD_REQUEST.value());
+		}
+	}
+	
+	return structure;
+}
+
 }
