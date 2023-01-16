@@ -48,7 +48,7 @@ public class Emailverification
 		}
 		
 		try {
-			helper.setText("Hello "+merchant.getName()+" below is the otp for your account creation /n"+merchant.getOtp());
+			helper.setText("Hello "+merchant.getName()+" below is the otp for your account creation "+merchant.getOtp());
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,7 +88,7 @@ public class Emailverification
 		}
 		
 		try {
-			helper.setText("Hello "+customer.getName()+" below is the otp for your account creation /n"+customer.getOtp());
+			helper.setText("Hello "+customer.getName()+" below is the otp for your account creation "+customer.getOtp());
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

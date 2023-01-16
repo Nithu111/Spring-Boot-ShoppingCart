@@ -28,4 +28,8 @@ public Merchant findById(int id)
 	else
 		return null;
 }
+
+public Merchant findByEmail(String email) {
+	return repository.findByEmail(email);
+}
 }
