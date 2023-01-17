@@ -1,6 +1,7 @@
 package org.jsp.shoppingcart.controller;
 
 import org.jsp.shoppingcart.dto.Merchant;
+import org.jsp.shoppingcart.dto.Product;
 import org.jsp.shoppingcart.helper.Login;
 import org.jsp.shoppingcart.helper.ResponseStructure;
 import org.jsp.shoppingcart.service.MerchantService;
@@ -36,6 +37,12 @@ public class MerchantController {
 	public ResponseStructure<Merchant> login(@RequestBody Login login)
 	{
 		return service.merchantLogin(login);
+	}
+	
+	@PostMapping("products/{id}")
+	public ResponseStructure<Merchant> addProduct(@PathVariable int id,@RequestBody Product product)
+	{
+		return service.addProduct(id,product);
 	}
 	
 }
