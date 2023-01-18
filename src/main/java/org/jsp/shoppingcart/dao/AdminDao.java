@@ -16,4 +16,8 @@ public class AdminDao
 	{
 		return repository.save(admin);
 	}
+
+	public Admin findByEmail(String email) {
+		return repository.findByEmail(email);
+	}
 }

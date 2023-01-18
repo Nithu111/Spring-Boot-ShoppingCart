@@ -2,6 +2,7 @@ package org.jsp.shoppingcart.controller;
 
 import org.jsp.shoppingcart.dto.Merchant;
 import org.jsp.shoppingcart.dto.Product;
+import org.jsp.shoppingcart.exception.UserDefinedException;
 import org.jsp.shoppingcart.helper.Login;
 import org.jsp.shoppingcart.helper.ResponseStructure;
 import org.jsp.shoppingcart.service.MerchantService;
@@ -34,7 +35,7 @@ public class MerchantController {
 	}
 	
 	@PostMapping("login")
-	public ResponseStructure<Merchant> login(@RequestBody Login login)
+	public ResponseStructure<Merchant> login(@RequestBody Login login) throws UserDefinedException
 	{
 		return service.merchantLogin(login);
 	}

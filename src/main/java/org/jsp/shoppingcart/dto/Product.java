@@ -1,5 +1,7 @@
 package org.jsp.shoppingcart.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +12,7 @@ import lombok.Setter;
 
 @Entity
 @Getter@Setter
+@JsonIgnoreProperties("merchant")
 public class Product {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)

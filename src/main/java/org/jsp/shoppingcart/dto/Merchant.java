@@ -11,18 +11,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter@Setter
+@Getter
+@Setter
 public class Merchant {
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private int id;
-private String name;
-private String email;
-private String password;
-private boolean status;
-private int otp;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	private String name;
+	private String email;
+	private String password;
+	private boolean status;
+	private int otp;
 
-@OneToMany
-private List<Product> products;
+	@OneToMany
+	private List<Product> products;
 }

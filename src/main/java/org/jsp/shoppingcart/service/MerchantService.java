@@ -7,6 +7,7 @@ import org.jsp.shoppingcart.dao.MerchantDao;
 import org.jsp.shoppingcart.dao.ProductDao;
 import org.jsp.shoppingcart.dto.Merchant;
 import org.jsp.shoppingcart.dto.Product;
+import org.jsp.shoppingcart.exception.UserDefinedException;
 import org.jsp.shoppingcart.helper.Emailverification;
 import org.jsp.shoppingcart.helper.Login;
 import org.jsp.shoppingcart.helper.ResponseStructure;
@@ -64,7 +65,7 @@ public class MerchantService {
 		return structure;
 	}
 
-	public ResponseStructure<Merchant> merchantLogin(Login login) {
+	public ResponseStructure<Merchant> merchantLogin(Login login) throws UserDefinedException {
 		ResponseStructure<Merchant> structure = new ResponseStructure<>();
 
 		String email = login.getEmail();
@@ -72,9 +73,7 @@ public class MerchantService {
 
 		Merchant merchant = dao.findByEmail(email);
 		if (merchant == null) {
-			structure.setData(null);
-			structure.setMessage("Email Not Found");
-			structure.setStatus(HttpStatus.NOT_FOUND.value());
+			throw new UserDefinedException("Email Not Found");
 		} else {
 			if (merchant.isStatus()) {
 				if (merchant.getPassword().equals(password)) {
@@ -82,10 +81,7 @@ public class MerchantService {
 					structure.setMessage("Login Success");
 					structure.setStatus(HttpStatus.FOUND.value());
 				} else {
-					structure.setData(null);
-					structure.setMessage("Password MissMatch");
-					structure.setStatus(HttpStatus.BAD_REQUEST.value());
-
+					throw new UserDefinedException("Password Missmatch");
 				}
 			} else {
 				structure.setData(null);
@@ -104,9 +100,12 @@ public class MerchantService {
 		List<Product> products = merchant.getProducts();
 		products.add(productDao.saveProduct(product));
 		merchant.setProducts(products);
-		Merchant merchant2=dao.savemerchant(merchant);
 		
-		
+		ResponseStructure<Merchant> structure=new ResponseStructure<>();
+		structure.setData(dao.savemerchant(merchant));
+		structure.setMessage("Product added Succesfully");
+		structure.setStatus(HttpStatus.CREATED.value());
+		return structure;
 		
 	}
 
