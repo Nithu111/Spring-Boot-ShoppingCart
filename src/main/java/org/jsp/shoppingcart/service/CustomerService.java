@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.jsp.shoppingcart.dao.CustomerDao;
 import org.jsp.shoppingcart.dto.Customer;
+import org.jsp.shoppingcart.exception.UserDefinedException;
 import org.jsp.shoppingcart.helper.Emailverification;
 import org.jsp.shoppingcart.helper.ResponseStructure;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +33,13 @@ public class CustomerService {
 		return structure;
 	}
 
-	public ResponseStructure<Customer> verifyCustomer(int id, int otp) {
+	public ResponseStructure<Customer> verifyCustomer(int id, int otp) throws UserDefinedException {
 		ResponseStructure<Customer> structure = new ResponseStructure<>();
 
 		Customer customer = dao.findById(id);
 
 		if (customer == null) {
-			structure.setData(null);
-			structure.setMessage("Id Not Found");
-			structure.setStatus(HttpStatus.BAD_REQUEST.value());
+		throw new UserDefinedException("Id not found");
 		} else {
 			if (otp == customer.getOtp()) {
 				customer.setStatus(true);
@@ -48,9 +47,7 @@ public class CustomerService {
 				structure.setMessage("Account created Succesfully");
 				structure.setStatus(HttpStatus.CREATED.value());
 			} else {
-				structure.setData(null);
-				structure.setMessage("OTP Missmatch");
-				structure.setStatus(HttpStatus.BAD_REQUEST.value());
+			throw new UserDefinedException("OTP MIssmatch");
 			}
 		}
 

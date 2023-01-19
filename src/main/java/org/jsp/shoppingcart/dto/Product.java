@@ -11,17 +11,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter@Setter
+@Getter
+@Setter
 @JsonIgnoreProperties("merchant")
 public class Product {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private int id;
-private String name;
-private double price;
-private int quantity;
-private boolean status;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	private String name;
+	private double price;
+	private int quantity;
+	private boolean status;
 
-@ManyToOne
-private Merchant merchant;
+	@ManyToOne
+	private Merchant merchant;
 }

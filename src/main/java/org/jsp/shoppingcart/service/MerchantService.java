@@ -40,15 +40,13 @@ public class MerchantService {
 		return structure;
 	}
 
-	public ResponseStructure<Merchant> verifyMerchant(int id, int otp) {
+	public ResponseStructure<Merchant> verifyMerchant(int id, int otp) throws UserDefinedException {
 		ResponseStructure<Merchant> structure = new ResponseStructure<>();
 
 		Merchant merchant = dao.findById(id);
 
 		if (merchant == null) {
-			structure.setData(null);
-			structure.setMessage("Id Not Found");
-			structure.setStatus(HttpStatus.BAD_REQUEST.value());
+			throw new UserDefinedException("Id not found");
 		} else {
 			if (otp == merchant.getOtp()) {
 				merchant.setStatus(true);
@@ -56,9 +54,7 @@ public class MerchantService {
 				structure.setMessage("Account created Succesfully");
 				structure.setStatus(HttpStatus.CREATED.value());
 			} else {
-				structure.setData(null);
-				structure.setMessage("OTP Missmatch");
-				structure.setStatus(HttpStatus.BAD_REQUEST.value());
+				throw new UserDefinedException("OTP MIssmatch");
 			}
 		}
 
@@ -84,9 +80,7 @@ public class MerchantService {
 					throw new UserDefinedException("Password Missmatch");
 				}
 			} else {
-				structure.setData(null);
-				structure.setMessage("Verify your Email First");
-				structure.setStatus(HttpStatus.BAD_REQUEST.value());
+			throw new UserDefinedException("Verify your email first");
 			}
 		}
 
@@ -107,6 +101,37 @@ public class MerchantService {
 		structure.setStatus(HttpStatus.CREATED.value());
 		return structure;
 		
+	}
+
+	public ResponseStructure<Product> updateProduct(Product product) {
+		ResponseStructure<Product> structure=new ResponseStructure<>();
+		structure.setData(productDao.saveProduct(product));
+		structure.setMessage("Product Updated Succesfully");
+		structure.setStatus(HttpStatus.OK.value());
+		return structure;
+	}
+
+	public ResponseStructure<Product> deleteProduct(int id) throws UserDefinedException {
+		Product product=productDao.fetchProduct(id);
+		if(product==null)
+		{
+			throw new UserDefinedException("Product Not Found");
+		}
+		else {
+			Merchant merchant=product.getMerchant();
+			List<Product> products = merchant.getProducts();
+			products.remove(product);
+			dao.savemerchant(merchant);
+			
+			product.setMerchant(null);
+			productDao.saveProduct(product);
+			productDao.deleteById(id);
+			ResponseStructure<Product> structure=new ResponseStructure<>();
+			structure.setData(product);
+			structure.setMessage("Product deleted Succesfully");
+			structure.setStatus(HttpStatus.ACCEPTED.value());
+			return structure;
+		}
 	}
 
 }

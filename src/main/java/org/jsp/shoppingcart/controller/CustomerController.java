@@ -1,6 +1,7 @@
 package org.jsp.shoppingcart.controller;
 
 import org.jsp.shoppingcart.dto.Customer;
+import org.jsp.shoppingcart.exception.UserDefinedException;
 import org.jsp.shoppingcart.helper.ResponseStructure;
 import org.jsp.shoppingcart.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class CustomerController {
 	}
 
 	@PutMapping("signup/{id}")
-	public ResponseStructure<Customer> saveCustomer(@PathVariable int id, @RequestParam int otp) {
+	public ResponseStructure<Customer> saveCustomer(@PathVariable int id, @RequestParam int otp) throws UserDefinedException {
 		return service.verifyCustomer(id, otp);
 	}
 
